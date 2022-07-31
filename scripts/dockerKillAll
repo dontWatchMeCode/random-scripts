@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+docker stop $(docker ps -a -q) > /dev/null 2>&1 &&
+docker rm $(docker ps -a -q) > /dev/null 2>&1 &&
+
+echo
+echo "all containers stopped and removed"
