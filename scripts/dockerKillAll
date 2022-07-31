@@ -1,7 +1,17 @@
 #!/usr/bin/bash
 
-docker stop $(docker ps -a -q) > /dev/null 2>&1 &&
-docker rm $(docker ps -a -q) > /dev/null 2>&1 &&
+read -r -p "Are you sure? [y/N] " response
+case "$response" in
+    [yY][eE][sS]|[yY])
+        ;;
+    *)
+        echo "exiting"
+        exit
+        ;;
+esac
 
-echo
+docker stop "$(docker ps -a -q)" > /dev/null 2>&1 &&
+docker rm "$(docker ps -a -q)" > /dev/null 2>&1 &&
+
+echo "↵"
 echo "all containers stopped and removed"
