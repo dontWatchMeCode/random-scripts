@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+
+read -r -p "Are you sure? [y/N] " response
+case "$response" in
+    [yY][eE][sS]|[yY])
+        ;;
+    *)
+        echo "exiting"
+        exit
+        ;;
+esac
+
+# rename space to underscore
+for f in *\ *; do mv "$f" "${f// /_}"; done
+
+echo "↵"
+echo "files renamed"

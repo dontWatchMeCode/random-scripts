@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+# usually fixes install issues
+npm cache clear --force
+
+echo "↵"
+echo "npm cache cleared"
