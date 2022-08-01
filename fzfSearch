@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 path="$(readlink -f -- "$0" | sed 's/fzfSearch//')scripts"
-file="$(find "${path}" -maxdepth 1 -type f | sed 's/^.*scripts//' | fzf)"
+file="$(find "${path}" -maxdepth 2 -type f | sed 's/^.*scripts//' | fzf)"
 
 if [ "${file}" ]; then
     bash -e "${path}${file}"

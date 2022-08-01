@@ -10,8 +10,7 @@ case "$response" in
         ;;
 esac
 
-docker stop "$(docker ps -a -q)" > /dev/null 2>&1 &&
-docker rm "$(docker ps -a -q)" > /dev/null 2>&1 &&
+# rename space to underscore
+for f in *\ *; do mv "$f" "${f// /_}"; done
 
-echo "↵"
-echo "all containers stopped and removed"
+echo "files renamed"

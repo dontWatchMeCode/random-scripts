@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+path="$(readlink -f -- "$0" | sed 's/rights//')"
+cd "${path}" && cd ..
+
+chmod -R +x ./
+
+echo "added +x to scripts"

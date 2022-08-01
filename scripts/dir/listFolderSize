@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+du -BM --max-depth=1 2>/dev/null | sort -n
