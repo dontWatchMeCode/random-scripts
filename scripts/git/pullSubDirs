@@ -1,3 +1,8 @@
 #!/usr/bin/bash
 
-ls | xargs -P10 -I{} git -C {} pull
+dirs=$(find . -maxdepth 2 -type d -name ".git" | sed 's/.git//' | sed 's/.//')
+location=$(pwd)
+
+echo "${dirs}" | while read -r line ; do
+    cd "${location}$line" && git pull&
+done
