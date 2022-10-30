@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+echo "mysqldump -p -h HOST -u USER DB > backup.sql"
