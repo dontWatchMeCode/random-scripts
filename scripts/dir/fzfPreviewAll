@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+find . 2>/dev/null | fzf --preview='bat --color=always --style=numbers --line-range=:500 {}' --bind shift-up:preview-page-up,shift-down:preview-page-down | xargs -r code -a
