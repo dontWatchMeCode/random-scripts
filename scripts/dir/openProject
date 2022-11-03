@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 
-cd ~/Projects
+cd ~/Projects &&
 
-code $(ls | fzf)
+project=$(ls | fzf)
+
+if [ "$project" ]; then
+    code "$project"
+fi
