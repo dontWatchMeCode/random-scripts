@@ -1,6 +1,0 @@
-#!/usr/bin/bash
-
-screen -XS rplasma quit
-screen -dmS rplasma plasmashell --replace
-screen -XS rkwin quit
-screen -dmS rkwin kwin_x11 --replace
