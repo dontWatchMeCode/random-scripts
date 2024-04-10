@@ -9,8 +9,7 @@ read -r _input
 _curl_base="curl --request GET"
 _timeout="15"
 
-_input_ip=$($_curl_base -ks -m "$_timeout" "https://dns.google.com/resolve?name=${_input}&type=A" |
-    jq '.Answer[0].data' | tr -d "\"" 2>/dev/null)
+_input_ip=$($_curl_base -ks -m "$_timeout" "https://dns.google.com/resolve?name=${_input}&type=A" | jq '.Answer[0].data' | tr -d "\"" 2>/dev/null)
 
 if [[ -z "$_input_ip" ]] || [[ "$_input_ip" == "null" ]]; then
 

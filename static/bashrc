@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+PS1='[\u@\h \W]\$ '
+
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias speedtest='speedtest-go'
+alias fast='speedtest-go'
+alias upd='yay && flatpak update'
+alias npm='pnpm'
+
+function _ssh_sesslog() {
+    _sesdir="$HOME/.ssh_log"
+
+    mkdir -p "${_sesdir}" && ssh "$@" 2>&1 | tee -a "${_sesdir}/$(date +%Y%m%d).log"
+}
+alias ssh='_ssh_sesslog'
+
+pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="${PATH:+"$PATH:"}$1"
+    fi
+}
+
+pathadd "$HOME/.bin"
+pathadd "$HOME/go/bin"
+
+date
+echo ---------------------
+echo kernel: "$(uname -r)"
+echo uptime: "$(uptime -p)"
+echo shell: "$SHELL"
+echo ---------------------

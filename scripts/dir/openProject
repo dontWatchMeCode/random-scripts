@@ -1,8 +1,6 @@
 #!/usr/bin/bash
 
-cd ~/Projects &&
-
-project=$(ls | fzf)
+cd ~/Projects && project=$(find . -type d -maxdepth 1 | fzf)
 
 if [ "$project" ]; then
     code "$project"
