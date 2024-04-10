@@ -1,0 +1,26 @@
+#!/usr/bin/bash
+
+# https://github.com/trimstray/the-book-of-secret-knowledge?tab=readme-ov-file#get-asn
+
+echo -en "Enter the domain / adress: "
+
+read -r _input
+
+_input=$(basename "$_input")
+
+_curl_base="curl --request GET"
+_timeout="15"
+
+_asn=$($_curl_base -ks -m "$_timeout" "http://ip-api.com/line/${_input}?fields=as")
+
+_state=$(echo $?)
+
+if [[ -z "$_input" ]] || [[ "$_input" == "null" ]] || [[ "$_state" -ne 0 ]]; then
+
+    echo -en "Unsuccessful ASN gathering.\\n"
+
+else
+
+    echo -en "$_input > $_asn\\n"
+
+fi

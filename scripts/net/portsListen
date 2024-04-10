@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+lsof -Pni4 | grep LISTEN | column -t

@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+lsof -Pnl -i
