@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+echo "ffmpeg -y -i 'input.mkv' -c copy -c:a aac 'output.mp4'"

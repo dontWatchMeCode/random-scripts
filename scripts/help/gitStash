@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+echo "# export / create
+
+git stash show \"stash@{0}\" -p > changes.patch
+
+# import / apply
+
+git apply changes.patch
+
+# revert
+
+git apply changes.patch --reverse"

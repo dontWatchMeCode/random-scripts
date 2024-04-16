@@ -1,5 +1,3 @@
 #!/usr/bin/bash
 
-echo "tar -czvhf backup.tar.gz ./
---verify
---exclude='./folder'"
+echo "tar -czvhf backup.tar.gz ./ --verify --exclude='./folder'"
