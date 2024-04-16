@@ -6,7 +6,16 @@
 PS1='[\u@\h \W]\$ '
 
 alias ls='ls --color=auto'
+alias ll='ls -l --color=auto'
+alias la='ls -la --color=auto'
+alias l='ls'
+alias lc='expr $(ls -l | wc -l) - 1'
+alias lca='expr $(ls -la | wc -l) - 1'
+
 alias grep='grep --color=auto'
+
+alias c='clear'
+
 alias speedtest='speedtest-go'
 alias fast='speedtest-go'
 alias upd='yay && flatpak update'
