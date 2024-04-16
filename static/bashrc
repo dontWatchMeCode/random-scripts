@@ -9,7 +9,7 @@ if [[ "$0" == '/bin/bash' ]]; then
 
     #PS1='[\u@\h \W]\$ '
 else
-    PS1='%F{blue}%~ %(?.%F{green}.%F{red})%#%f '
+    PS1='%F{blue}%~ %(?.%F{green}.%F{red})►%f '
 fi
 
 alias ls='ls --color=auto'
