@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "split -b 250M <abs path to archive>/<archive> '<archive>.part'
+
+rsync --progress -avz <abs local path>/* /run/user/1000/gvfs/sftp:host=<0.0.0.0>,port=<3000>,user=<user><abs remote path>
+
+cat <archive>.part* ><archive>"
