@@ -3,14 +3,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-if [[ "$0" == '/bin/bash' ]]; then
-    zsh
-    exit
-
-    #PS1='[\u@\h \W]\$ '
-else
-    PS1='%F{blue}%~ %(?.%F{green}.%F{red})►%f '
-fi
+PS1='[\u@\h \W]\$ '
 
 alias ls='ls --color=auto'
 alias ll='ls -l --color=auto'
