@@ -16,11 +16,6 @@ alias grep='grep --color=auto'
 
 alias c='clear'
 
-alias speedtest='speedtest-go'
-alias fast='speedtest-go'
-alias upd='yay && flatpak update'
-alias npm='pnpm'
-
 function _ssh_sesslog() {
     _sesdir="$HOME/.ssh_log"
 
