@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+if [ -d "$HOME/.config/nvm" ]; then
+    export NVM_DIR="$HOME/.config/nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+    (
+        cd "$NVM_DIR"
+        git fetch --tags origin
+        git checkout $(git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1))
+    ) && \. "$NVM_DIR/nvm.sh"
+
+    nvm install --lts
+    nvm use --lts
+    nvm alias default node
+fi
+
+if which snap &>/dev/null; then
+    sudo snap refresh
+fi
+
+if which flatpak &>/dev/null; then
+    flatpak update -y
+fi
+
+if which apt &>/dev/null; then
+    sudo apt update
+    sudo apt upgrade -y
+fi
+
+if which yay &>/dev/null; then
+    sudo yay
+fi
