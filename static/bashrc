@@ -3,38 +3,79 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# set a fancy prompt
 PS1='[\u@\h \W]\$ '
 
-alias ls='ls --color=auto'
-alias ll='ls -l --color=auto'
-alias la='ls -la --color=auto'
-alias l='ls'
-alias lc='expr $(ls -l | wc -l) - 1'
-alias lca='expr $(ls -la | wc -l) - 1'
-
-alias grep='grep --color=auto'
-
-alias c='clear'
-
-function _ssh_sesslog() {
+function _rds_ssh_sesslog() {
     _sesdir="$HOME/.ssh_log"
 
     mkdir -p "${_sesdir}" && ssh "$@" 2>&1 | tee -a "${_sesdir}/$(date +%Y%m%d).log"
 }
-alias ssh='_ssh_sesslog'
+alias ssh='_rds_sesslog'
 
-pathadd() {
+_rds_pathadd() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
         PATH="${PATH:+"$PATH:"}$1"
     fi
 }
 
-pathadd "$HOME/.bin"
-pathadd "$HOME/go/bin"
+_rds_initSettings() {
+    # don't put duplicate lines or lines starting with space in the history.
+    # See bash(1) for more options
+    HISTCONTROL=ignoreboth
 
-date
-echo ---------------------
-echo kernel: "$(uname -r)"
-echo uptime: "$(uptime -p)"
-echo shell: "$SHELL"
-echo ---------------------
+    # append to the history file, don't overwrite it
+    shopt -s histappend
+
+    # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+    HISTSIZE=1000
+    HISTFILESIZE=2000
+
+    # check the window size after each command and, if necessary,
+    # update the values of LINES and COLUMNS.
+    shopt -s checkwinsize
+
+    # enable color support of ls and also add handy aliases
+    if [ -x /usr/bin/dircolors ]; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    fi
+
+    # colored GCC warnings and errors
+    export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+    if [ -d "$HOME/.config/nvm" ]; then
+        export NVM_DIR="$HOME/.config/nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+    fi
+}
+
+_rds_initAlias() {
+    alias ls='ls --color=auto'
+    alias ll='ls -l --color=auto'
+    alias la='ls -la --color=auto'
+    alias l='ls'
+    alias lc='expr $(ls -l | wc -l) - 1'
+    alias lca='expr $(ls -la | wc -l) - 1'
+
+    alias grep='grep --color=auto'
+
+    alias c='clear'
+}
+
+_rds_printWelcome() {
+    date
+    echo ---------------------
+    echo kernel: "$(uname -r)"
+    echo uptime: "$(uptime -p)"
+    echo shell: "$SHELL"
+    echo ---------------------
+}
+
+_rds_pathadd "$HOME/.bin"
+_rds_pathadd "$HOME/go/bin"
+
+_rds_initSettings
+_rds_initAlias
+
+_rds_printWelcome
