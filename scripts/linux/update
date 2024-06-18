@@ -2,6 +2,7 @@
 
 if [ -d "$HOME/.config/nvm" ]; then
     export NVM_DIR="$HOME/.config/nvm"
+
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
     (
@@ -13,6 +14,15 @@ if [ -d "$HOME/.config/nvm" ]; then
     nvm install --lts
     nvm use --lts
     nvm alias default node
+    nvm install-latest-npm
+
+    nvm cache clear
+fi
+
+if which npm &>/dev/null; then
+    if which pnpm &>/dev/null; then
+        npm i -g pnpm
+    fi
 fi
 
 if which snap &>/dev/null; then
