@@ -20,9 +20,7 @@ if [ -d "$HOME/.config/nvm" ]; then
 fi
 
 if which npm &>/dev/null; then
-    if which pnpm &>/dev/null; then
-        npm i -g pnpm
-    fi
+    npm i -g pnpm
 fi
 
 if which snap &>/dev/null; then
