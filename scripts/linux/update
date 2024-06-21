@@ -36,7 +36,7 @@ if which apt &>/dev/null; then
 fi
 
 if which yay &>/dev/null; then
-    sudo yay
+    yay
 fi
 
 if which yum &>/dev/null; then
