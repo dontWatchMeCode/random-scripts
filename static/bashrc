@@ -72,8 +72,17 @@ _rds_printWelcome() {
     echo ---------------------
 }
 
-_rds_pathadd "$HOME/.bin"
-_rds_pathadd "$HOME/go/bin"
+if [ -d "$HOME/.bin" ]; then
+    _rds_pathadd "$HOME/.bin"
+fi
+
+if [ -d "$HOME/go/bin" ]; then
+    _rds_pathadd "$HOME/go/bin"
+fi
+
+if [ -d "$HOME/.npm-global" ]; then
+    _rds_pathadd "$HOME/.npm-global"
+fi
 
 _rds_initSettings
 _rds_initAlias
