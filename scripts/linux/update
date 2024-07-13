@@ -21,11 +21,6 @@ fi
 
 if which distrobox &>/dev/null; then
     distrobox upgrade -a
-    distrobox enter arch -- npm i -g pnpm || echo "skipping npm"
-fi
-
-if which npm &>/dev/null; then
-    npm i -g pnpm
 fi
 
 if which snap &>/dev/null; then
