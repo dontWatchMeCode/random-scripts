@@ -42,3 +42,7 @@ fi
 if which yum &>/dev/null; then
     sudo yum -y update
 fi
+
+if which pnpm -eq /home/me/.npm-global/bin/pnpm; then
+    npm i -g pnpm@latest
+fi
