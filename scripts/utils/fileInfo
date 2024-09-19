@@ -24,11 +24,7 @@ application/pdf)
     pdfinfo "$file_name"
     echo "---"
     ;;
-*)
-    echo "No specific action for MIME type: $mime_type"
-    echo "---"
-    ;;
+*) ;;
 esac
 
-echo "$file_name"
 echo "> $file_info"
