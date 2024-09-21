@@ -11,7 +11,7 @@ function _rds_ssh_sesslog() {
 
     mkdir -p "${_sesdir}" && ssh "$@" 2>&1 | tee -a "${_sesdir}/$(date +%Y%m%d).log"
 }
-alias ssh='_rds_sesslog'
+alias ssh='_rds_ssh_sesslog'
 
 _rds_pathadd() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
@@ -61,6 +61,7 @@ _rds_initAlias() {
     alias grep='grep --color=auto'
 
     alias c='clear'
+    alias fh='eval $(history | fzf | sed "s/^[ ]*[0-9]*[ ]*//")'
 }
 
 _rds_printWelcome() {
