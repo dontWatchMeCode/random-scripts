@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+echo "rsync \\
+    -avz \\
+    -L \\
+    -e \"ssh -p <ssh port>\" \\
+    --exclude 'fileadmin' \\
+    --exclude '_processed_' \\
+    --exclude 'typo3/sysext' \\
+    --exclude 'typo3_src' \\
+    --exclude 'typo3_src*' \\
+    --exclude 'typo3temp' \\
+    <remote-user>@<remote-ip>:<remote-dir> ./"

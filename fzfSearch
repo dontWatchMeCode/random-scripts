@@ -2,7 +2,7 @@
 
 path="$(readlink -f -- "$0" | sed 's/fzfSearch//')scripts"
 file="$(
-    find "${path}" -maxdepth 2 -type f | sed 's/^.*scripts//' |
+    find "${path}" -maxdepth 3 -type f | sed 's/^.*scripts//' |
         fzf \
             --color=dark \
             --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:#44475a,hl+:#ffaf5f \

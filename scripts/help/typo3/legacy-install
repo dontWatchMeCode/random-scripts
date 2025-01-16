@@ -1,0 +1,14 @@
+#!/usr/bin/bash
+
+echo "rm -rf index.php typo3 typo3_src typo3_src-*
+
+wget --content-disposition https://get.typo3.org/9
+
+ARCHIVE_FILE=\"\$(find ./ -type f -name \\\"typo3_src-*.tar.gz\\\")\"
+SRC_FOLDER=\"\${ARCHIVE_FILE%.tar.gz}\"
+
+tar xzf \"\$ARCHIVE_FILE\"
+
+ln -s \"\$SRC_FOLDER\" typo3_src
+ln -s typo3_src/index.php index.php
+ln -s typo3_src/typo3 typo3"
