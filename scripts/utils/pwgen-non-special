@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+passowrd=$(
+    tr -dc 'A-Za-z0-9' </dev/urandom 2>/dev/null | head -c 24
+    echo
+)
+
+echo "$passowrd" | tr -d '[:space:]' | xclip -sel clip
+
+echo "Password copied to clipboard"
+
+echo "$passowrd"
