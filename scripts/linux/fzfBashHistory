@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cat ~/.bash_history | fzf | xclip -sel clip
+echo "Copied to clipboard"
