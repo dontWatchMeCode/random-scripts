@@ -14,13 +14,17 @@ if [ -d "$HOME/.config/nvm" ]; then
     nvm install --lts
     nvm use --lts
     nvm alias default node
-    nvm install-latest-npm
+    nvm install --reinstall-packages-from=default --latest-npm 'lts/*'
 
     nvm cache clear
 fi
 
 if which distrobox &>/dev/null; then
     distrobox upgrade -a
+fi
+
+if which npm &>/dev/null; then
+    npm update -g
 fi
 
 if which snap &>/dev/null; then
@@ -43,6 +47,6 @@ if which yum &>/dev/null; then
     sudo yum -y update
 fi
 
-if [ "$(which pnpm)" == "/home/me/.npm-global/bin/pnpm" ]; then
-    npm i -g pnpm@latest
+if which deno &>/dev/null; then
+    deno upgrade
 fi
