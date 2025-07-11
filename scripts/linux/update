@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ -d "$HOME/.config/nvm" ]; then
-    export NVM_DIR="$HOME/.config/nvm"
+if [ -d "$HOME/.nvm" ]; then
+    export NVM_DIR="$HOME/.nvm"
 
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
@@ -49,4 +49,8 @@ fi
 
 if which deno &>/dev/null; then
     deno upgrade
+fi
+
+if which dnf &>/dev/null; then
+    sudo dnf upgrade --refresh -y
 fi

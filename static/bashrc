@@ -3,9 +3,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# set a fancy prompt
-PS1='[\u@\h \W]\$ '
-
 function _rds_ssh_sesslog() {
     _sesdir="$HOME/.ssh_log"
 
@@ -37,17 +34,53 @@ _rds_initSettings() {
 
     # enable color support of ls and also add handy aliases
     if [ -x /usr/bin/dircolors ]; then
+        # shellcheck disable=SC2015
         test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     fi
 
     # colored GCC warnings and errors
     export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-    if [ -d "$HOME/.config/nvm" ]; then
-        export NVM_DIR="$HOME/.config/nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+    # nvm
+    if [ -d "$HOME/.nvm" ]; then
+        export NVM_DIR="$HOME/.nvm"
+        # shellcheck disable=SC1091
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+        # shellcheck disable=SC1091
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
     fi
+
+    # Deno
+    if [ -d "$HOME/.deno" ]; then
+        # shellcheck disable=SC1091
+        . "$HOME/.deno/env"
+        # shellcheck disable=SC1091
+        source "$HOME/.local/share/bash-completion/completions/deno.bash"
+    fi
+
+    # set a fancy prompt
+    PS1='[\u@\h \W]\$ '
+
+    # Source global definitions
+    if [ -f /etc/bashrc ]; then
+        # shellcheck disable=SC1091
+        . /etc/bashrc
+    fi
+
+    # User specific aliases and functions
+    if [ -d ~/.bashrc.d ]; then
+        for rc in ~/.bashrc.d/*; do
+            if [ -f "$rc" ]; then
+                # shellcheck disable=SC1090
+                . "$rc"
+            fi
+        done
+    fi
+    unset rc
+
+    which zoxide &>/dev/null && {
+        eval "$(zoxide init bash)"
+    }
 }
 
 _rds_initAlias() {
@@ -62,6 +95,10 @@ _rds_initAlias() {
 
     alias c='clear'
     alias fh='eval $(history | fzf | sed "s/^[ ]*[0-9]*[ ]*//")'
+
+    which z &>/dev/null && {
+        alias cd='z'
+    }
 }
 
 _rds_printWelcome() {
@@ -73,17 +110,11 @@ _rds_printWelcome() {
     echo ---------------------
 }
 
-if [ -d "$HOME/.bin" ]; then
-    _rds_pathadd "$HOME/.bin"
-fi
-
-if [ -d "$HOME/go/bin" ]; then
-    _rds_pathadd "$HOME/go/bin"
-fi
-
-if [ -d "$HOME/.npm-global/bin" ]; then
-    _rds_pathadd "$HOME/.npm-global/bin"
-fi
+_rds_pathadd "$HOME/.bin"
+_rds_pathadd "$HOME/go/bin"
+_rds_pathadd "$HOME/.npm-global/bin"
+_rds_pathadd "$HOME/.local/bin"
+_rds_pathadd "$HOME/bin"
 
 _rds_initSettings
 _rds_initAlias
