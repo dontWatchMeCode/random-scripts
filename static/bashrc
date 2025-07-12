@@ -96,6 +96,10 @@ _rds_initAlias() {
     alias c='clear'
     alias fh='eval $(history | fzf | sed "s/^[ ]*[0-9]*[ ]*//")'
 
+    which bat &>/dev/null && {
+        alias cat='bat'
+    }
+
     which z &>/dev/null && {
         alias cd='z'
     }
