@@ -72,3 +72,27 @@ if which go &>/dev/null; then
     go install github.com/air-verse/air@latest
     sudo -v
 fi
+
+if which ollama &>/dev/null; then
+    # Get the current installed version of Ollama
+    INSTALLED_VERSION=$(ollama --version | awk '{print $NF}')
+
+    # Get the latest release version from GitHub API
+    # This requires `jq` to parse JSON. Install it if you don't have it.
+    LATEST_VERSION=$(curl -s https://api.github.com/repos/ollama/ollama/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//')
+
+    echo "Installed Ollama Version: $INSTALLED_VERSION"
+    echo "Latest GitHub Version: $LATEST_VERSION"
+
+    # Compare the versions
+    if [[ "$(printf '%s\n' "$LATEST_VERSION" "$INSTALLED_VERSION" | sort -V | head -n1)" = "$INSTALLED_VERSION" && "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
+        echo "Your Ollama is outdated. Please update to the latest version."
+    elif [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ]; then
+        echo "Your Ollama is up to date."
+    else
+        echo "Your Ollama version is newer than the latest release on GitHub (possibly a pre-release or local build)."
+        echo "Updating Ollama..."
+        curl -fsSL https://ollama.com/install.sh | sh
+        echo "Restarting Ollama..."
+    fi
+fi
