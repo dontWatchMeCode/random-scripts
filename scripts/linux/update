@@ -51,11 +51,6 @@ if which yay &>/dev/null; then
     sudo -v
 fi
 
-if which yum &>/dev/null; then
-    sudo yum -y update
-    sudo -v
-fi
-
 if which deno &>/dev/null; then
     deno upgrade
     sudo -v
@@ -70,6 +65,7 @@ if which go &>/dev/null; then
     go install github.com/showwin/speedtest-go@latest
     go install github.com/a-h/templ/cmd/templ@latest
     go install github.com/air-verse/air@latest
+    go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
     sudo -v
 fi
 
