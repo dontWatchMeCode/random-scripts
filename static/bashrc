@@ -104,6 +104,10 @@ _rds_initAlias() {
         alias cd='z'
     }
 
+    which ani-cli &>/dev/null && {
+        alias anid='ani-cli --vlc --dub'
+    }
+
     which ollama &>/dev/null && {
         ai-l() {
             if [ -z "$1" ]; then
