@@ -95,4 +95,7 @@ if which ollama &>/dev/null; then
         curl -fsSL https://ollama.com/install.sh | sh
         echo "Restarting Ollama..."
     fi
+
+    ollama pull deepseek-r1:8b
+    ollama pull tinyllama:1.1b
 fi

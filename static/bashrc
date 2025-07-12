@@ -99,6 +99,26 @@ _rds_initAlias() {
     which z &>/dev/null && {
         alias cd='z'
     }
+
+    which ollama &>/dev/null && {
+        ai-l() {
+            if [ -z "$1" ]; then
+                echo "Usage: ai \"Your question here\""
+                return 1
+            fi
+            echo "---"
+            echo "$@" | ollama run deepseek-r1:8b
+        }
+
+        ai() {
+            if [ -z "$1" ]; then
+                echo "Usage: ai-small \"Your question here\""
+                return 1
+            fi
+            echo "---"
+            echo "$@" | ollama run tinyllama:1.1b
+        }
+    }
 }
 
 _rds_printWelcome() {
