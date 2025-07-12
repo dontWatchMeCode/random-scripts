@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+date +%s | tr -d '\n' | xclip -selection clipboard
