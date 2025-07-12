@@ -98,4 +98,10 @@ if which ollama &>/dev/null; then
 
     ollama pull deepseek-r1:8b
     ollama pull tinyllama:1.1b
+    sudo -v
 fi
+
+which ani-cli &>/dev/null && {
+    ani-cli -U
+    sudo -v
+}
