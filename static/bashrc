@@ -100,7 +100,7 @@ _rds_initAlias() {
         alias cat='bat'
     }
 
-    which z &>/dev/null && {
+    which zoxide &>/dev/null && {
         alias cd='z'
     }
 
