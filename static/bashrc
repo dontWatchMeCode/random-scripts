@@ -59,7 +59,12 @@ _rds_initSettings() {
     fi
 
     # set a fancy prompt
-    PS1='[\u@\h \W]\$ '
+    PS1='[\u \W]\$ '
+
+    # set a fancy prompt for distrobox
+    if [ -n "$DISTROBOX_ENTER_PATH" ]; then
+        PS1='[\u@distrobox \W]\$ '
+    fi
 
     # Source global definitions
     if [ -f /etc/bashrc ]; then
