@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Prompt for the target time
+read -p "Enter target time (HH:MM, e.g., 14:00): " TARGET_TIME_STR
+
+# Validate time format (basic check)
+if ! [[ "$TARGET_TIME_STR" =~ ^([01]?[0-9]|2[0-3]):[0-5][0-9]$ ]]; then
+    echo "Error: Invalid time format. Please use HH:MM (e.g., 09:30 or 14:00)."
+    exit 1
+fi
+
+# Get current date and time
+CURRENT_TIME_SECONDS=$(date +%s) # Current time in seconds since epoch
+CURRENT_HOUR=$(date +%H)
+CURRENT_MINUTE=$(date +%M)
+
+# Extract target hour and minute for comparison
+TARGET_HOUR=$(echo "$TARGET_TIME_STR" | cut -d':' -f1)
+TARGET_MINUTE=$(echo "$TARGET_TIME_STR" | cut -d':' -f2)
+
+# Determine the target date: today or tomorrow
+# If the target time has already passed today, set target date to tomorrow
+if [[ "$TARGET_HOUR" -lt "$CURRENT_HOUR" ]] ||
+    ([[ "$TARGET_HOUR" -eq "$CURRENT_HOUR" ]] && [[ "$TARGET_MINUTE" -le "$CURRENT_MINUTE" ]]); then
+    TARGET_DATE=$(date -d "tomorrow" +%Y-%m-%d)
+else
+    TARGET_DATE=$(date +%Y-%m-%d)
+fi
+
+# Construct the full target timestamp string
+FULL_TARGET_TIMESTAMP_STR="${TARGET_DATE} ${TARGET_TIME_STR}:00"
+
+# Calculate target time in seconds since epoch
+TARGET_TIME_SECONDS=$(date -d "${FULL_TARGET_TIMESTAMP_STR}" +%s)
+
+# Calculate difference in seconds
+DIFF_SECONDS=$((TARGET_TIME_SECONDS - CURRENT_TIME_SECONDS))
+
+# Handle cases where calculation might result in negative (shouldn't happen with logic above, but good safeguard)
+if [ "$DIFF_SECONDS" -lt 0 ]; then
+    echo "Error: Calculated time difference is negative. This indicates a logical issue."
+    exit 1
+fi
+
+# Convert seconds to hours, minutes, seconds
+HOURS=$((DIFF_SECONDS / 3600))
+REMAINING_SECONDS=$((DIFF_SECONDS % 3600))
+MINUTES=$((REMAINING_SECONDS / 60))
+SECONDS=$((REMAINING_SECONDS % 60))
+
+# Print the result
+echo "Time until ${TARGET_TIME_STR} on ${TARGET_DATE}:"
+printf "%d hours, %d minutes, %d seconds\n" "$HOURS" "$MINUTES" "$SECONDS"
