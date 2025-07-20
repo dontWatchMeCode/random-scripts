@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+distrobox list --no-color | awk 'NR>1 {print $3}' | while read name; do
+    echo "restarting: $name"
+
+    distrobox stop "$name" -Y || echo "stop failed"
+    distrobox enter "$name" -- bash -c 'echo started' </dev/null || echo "enter failed"
+done
