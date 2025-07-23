@@ -129,8 +129,21 @@ _rds_initAlias() {
                 return 1
             fi
             echo "---"
-            echo "$@" | ollama run tinyllama:1.1b
+            echo "$@" | ollama run llama3.2:latest
         }
+
+        if command -v say &>/dev/null; then
+            ai-s() {
+                if [ -z "$1" ]; then
+                    echo "Usage: ais \"Your question here\""
+                    return 1
+                fi
+                local ai_output
+                ai_output=$(ai "$@")
+                echo "$ai_output"
+                say "$ai_output"
+            }
+        fi
     }
 }
 

@@ -95,6 +95,7 @@ if which ollama &>/dev/null; then
 
     ollama pull deepseek-r1:8b
     ollama pull tinyllama:1.1b
+    ollama pull llama3.2:latest
     sudo echo auth
 fi
 
