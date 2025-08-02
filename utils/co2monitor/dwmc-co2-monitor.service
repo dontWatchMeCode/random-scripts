@@ -1,0 +1,12 @@
+[Unit]
+Description=dwmc-co2-monitor
+After=network.target
+
+[Service]
+ExecStart=/home/me/bin/dwmc-co2-monitor
+Restart=always
+RestartSec=5s
+TimeoutStopSec=10s
+
+[Install]
+WantedBy=default.target

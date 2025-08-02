@@ -2,7 +2,15 @@
 	"tasks": {
 		"run": "deno run --env-file --allow-net --allow-write --allow-env --allow-read --allow-ffi main.ts",
 		"compile": "deno compile --env-file --allow-net --allow-write --allow-env --allow-read --allow-ffi --output co2.bin main.ts",
-		"copy": "deno task compile && cp co2.bin ~/bin/dwmc-co2-monitor"
+		"systemd-copy": "mkdir -p ~/.config/systemd/user/ && cp ./dwmc-co2-monitor.service ~/.config/systemd/user/dwmc-co2-monitor.service",
+		"systemd-demon-reload": "systemctl --user daemon-reload",
+		"systemd-enable": "systemctl --user enable dwmc-co2-monitor.service",
+		"systemd-restart": "systemctl --user restart dwmc-co2-monitor.service",
+		"systemd-stop": "systemctl --user stop dwmc-co2-monitor.service",
+		"systemd-status": "systemctl --user status dwmc-co2-monitor.service",
+		"systemd-log": "journalctl --user -u dwmc-co2-monitor.service",
+		"systemd-update": "deno task systemd-copy && deno task systemd-demon-reload && deno task systemd-enable && deno task systemd-restart",
+		"copy": "deno task compile && deno task systemd-stop && cp co2.bin ~/bin/dwmc-co2-monitor && sleep 1 && deno task systemd-update"
 	},
 	"imports": {
 		"@influxdata/influxdb-client": "npm:@influxdata/influxdb-client@^1.35.0",
