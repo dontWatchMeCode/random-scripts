@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+toml_file="/home/me/Config.toml"
+
+# Read each command into an array element, preserving spaces
+mapfile -t commands < <(yj -t <"$toml_file" | jq -r '.commands[]')
+
+selected_command=$(printf "%s\n" "${commands[@]}" | fzf)
+
+if [[ -n "$selected_command" ]]; then
+  eval "$selected_command"
+fi

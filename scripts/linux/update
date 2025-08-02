@@ -70,6 +70,12 @@ if which go &>/dev/null; then
     sudo echo auth
 fi
 
+if which brew &>/dev/null; then
+    brew update
+    brew upgrade
+    brew install yj
+fi
+
 if which ollama &>/dev/null; then
     # Get the current installed version of Ollama
     INSTALLED_VERSION=$(ollama --version | awk '{print $NF}')

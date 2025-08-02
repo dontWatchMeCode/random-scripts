@@ -90,6 +90,11 @@ _rds_initSettings() {
         _ZO_DOCTOR=0
         eval "$(zoxide init --cmd cd bash)"
     }
+
+    # Linuxbrew
+    if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    fi
 }
 
 _rds_initAlias() {
