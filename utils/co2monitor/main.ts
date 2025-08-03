@@ -32,7 +32,6 @@ const writeLog = (message: string) => {
 
 	Deno.writeFileSync(path, new TextEncoder().encode(timestamp + ' ' + message + '\n'), { append: true });
 };
-
 if (Deno.args.includes('--logs')) {
 	const logPath = String(Deno.env.get('log_path')).trim();
 	if (!logPath) {
@@ -40,58 +39,12 @@ if (Deno.args.includes('--logs')) {
 		Deno.exit(1);
 	}
 
-	console.log('Watching log_path: ' + logPath);
+	const log = await Deno.readTextFile(logPath);
+	const lines = log.split('\n');
+	lines.reverse();
+	console.log(lines.slice(0, 20).join('\n'));
 
-	// Read the initial content of the log file
-	try {
-		const initialContent = Deno.readTextFileSync(logPath);
-		console.log(initialContent);
-	} catch (error) {
-		if (error instanceof Deno.errors.NotFound) {
-			console.log('Log file not found. Waiting for it to be created...');
-		} else {
-			console.error('Error reading log file:', error);
-			Deno.exit(1);
-		}
-	}
-
-	let lastSize = 0;
-	try {
-		const fileInfo = await Deno.stat(logPath);
-		lastSize = fileInfo.size;
-	} catch (error) {
-		throw new Error('Error getting initial file size: ' + error);
-	}
-
-	// Get the FsWatcher object
-	const watcher = Deno.watchFs(logPath);
-
-	// Add signal listener for Ctrl+C
-	Deno.addSignalListener('SIGINT', () => {
-		console.log('\nExiting log watcher...');
-		watcher.close(); // Close the watcher to stop the iterator
-	});
-
-	for await (const event of watcher) {
-		if (event.kind === 'modify') {
-			const fileInfo = await Deno.stat(logPath);
-			const currentSize = fileInfo.size;
-
-			if (currentSize > lastSize) {
-				const file = await Deno.open(logPath, { read: true });
-				await file.seek(lastSize, Deno.SeekMode.Start);
-
-				const buffer = new Uint8Array(currentSize - lastSize);
-				await file.read(buffer);
-				console.log(new TextDecoder().decode(buffer));
-
-				file.close();
-			}
-			lastSize = currentSize;
-		}
-	}
-
-	Deno.exit(0); // Exit cleanly after loop finishes (due to watcher.close())
+	Deno.exit(0);
 }
 
 // ... (rest of the code)
