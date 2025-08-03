@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo echo auth
+sudo -v
 
 if [ -d "$HOME/.nvm" ]; then
     export NVM_DIR="$HOME/.nvm"
@@ -23,42 +23,42 @@ fi
 
 if which distrobox &>/dev/null; then
     distrobox upgrade -a
-    sudo echo auth
+    sudo -v
 fi
 
 if which npm &>/dev/null; then
     npm update -g
-    sudo echo auth
+    sudo -v
 fi
 
 if which snap &>/dev/null; then
     sudo snap refresh
-    sudo echo auth
+    sudo -v
 fi
 
 if which flatpak &>/dev/null; then
     flatpak update -y
-    sudo echo auth
+    sudo -v
 fi
 
 if which apt &>/dev/null; then
     sudo apt update && sudo apt upgrade -y
-    sudo echo auth
+    sudo -v
 fi
 
 if which yay &>/dev/null; then
     yay
-    sudo echo auth
+    sudo -v
 fi
 
 if which deno &>/dev/null; then
     deno upgrade
-    sudo echo auth
+    sudo -v
 fi
 
 if which dnf &>/dev/null; then
     sudo dnf upgrade --refresh -y
-    sudo echo auth
+    sudo -v
 fi
 
 if which go &>/dev/null; then
@@ -67,7 +67,7 @@ if which go &>/dev/null; then
     go install github.com/air-verse/air@latest
     go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
     go install github.com/magefile/mage@latest
-    sudo echo auth
+    sudo -v
 fi
 
 if which brew &>/dev/null; then
@@ -102,10 +102,10 @@ if which ollama &>/dev/null; then
     ollama pull deepseek-r1:8b
     ollama pull tinyllama:1.1b
     ollama pull llama3.2:latest
-    sudo echo auth
+    sudo -v
 fi
 
 which ani-cli &>/dev/null && {
     ani-cli -U
-    sudo echo auth
+    sudo -v
 }
