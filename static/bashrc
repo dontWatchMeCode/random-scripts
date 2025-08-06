@@ -4,161 +4,161 @@
 [[ $- != *i* ]] && return
 
 function _rds_ssh_sesslog() {
-    _sesdir="$HOME/.ssh_log"
+	_sesdir="$HOME/.ssh_log"
 
-    mkdir -p "${_sesdir}" && ssh "$@" 2>&1 | tee -a "${_sesdir}/$(date +%Y%m%d).log"
+	mkdir -p "${_sesdir}" && ssh "$@" 2>&1 | tee -a "${_sesdir}/$(date +%Y%m%d).log"
 }
 alias ssh='_rds_ssh_sesslog'
 
 _rds_pathadd() {
-    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-        PATH="${PATH:+"$PATH:"}$1"
-    fi
+	if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+		PATH="${PATH:+"$PATH:"}$1"
+	fi
 }
 
 _rds_initSettings() {
-    # don't put duplicate lines or lines starting with space in the history.
-    # See bash(1) for more options
-    HISTCONTROL=ignoreboth
+	# don't put duplicate lines or lines starting with space in the history.
+	# See bash(1) for more options
+	HISTCONTROL=ignoreboth
 
-    # append to the history file, don't overwrite it
-    shopt -s histappend
+	# append to the history file, don't overwrite it
+	shopt -s histappend
 
-    # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-    HISTSIZE=1000
-    HISTFILESIZE=2000
+	# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+	HISTSIZE=1000
+	HISTFILESIZE=2000
 
-    # check the window size after each command and, if necessary,
-    # update the values of LINES and COLUMNS.
-    shopt -s checkwinsize
+	# check the window size after each command and, if necessary,
+	# update the values of LINES and COLUMNS.
+	shopt -s checkwinsize
 
-    # enable color support of ls and also add handy aliases
-    if [ -x /usr/bin/dircolors ]; then
-        # shellcheck disable=SC2015
-        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    fi
+	# enable color support of ls and also add handy aliases
+	if [ -x /usr/bin/dircolors ]; then
+		# shellcheck disable=SC2015
+		test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	fi
 
-    # colored GCC warnings and errors
-    export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+	# colored GCC warnings and errors
+	export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-    # nvm
-    if [ -d "$HOME/.nvm" ]; then
-        export NVM_DIR="$HOME/.nvm"
-        # shellcheck disable=SC1091
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-        # shellcheck disable=SC1091
-        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-    fi
+	# nvm
+	if [ -d "$HOME/.nvm" ]; then
+		export NVM_DIR="$HOME/.nvm"
+		# shellcheck disable=SC1091
+		[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+		# shellcheck disable=SC1091
+		[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+	fi
 
-    # Deno
-    if [ -d "$HOME/.deno" ]; then
-        # shellcheck disable=SC1091
-        . "$HOME/.deno/env"
-        # shellcheck disable=SC1091
-        if [ -f "$HOME/.local/share/bash-completion/completions/deno.bash" ]; then
-            # shellcheck disable=SC1091
-            source "$HOME/.local/share/bash-completion/completions/deno.bash"
-        fi
-    fi
+	# Deno
+	if [ -d "$HOME/.deno" ]; then
+		# shellcheck disable=SC1091
+		. "$HOME/.deno/env"
+		# shellcheck disable=SC1091
+		if [ -f "$HOME/.local/share/bash-completion/completions/deno.bash" ]; then
+			# shellcheck disable=SC1091
+			source "$HOME/.local/share/bash-completion/completions/deno.bash"
+		fi
+	fi
 
-    # set a fancy prompt
-    PS1='[\u \W]\$ '
+	# set a fancy prompt
+	PS1='[\u \W]\$ '
 
-    # set a fancy prompt for distrobox
-    if [ -n "$CONTAINER_ID" ]; then
-        PS1='[\u@box ${CONTAINER_ID} \W]\$ '
-    fi
+	# set a fancy prompt for distrobox
+	if [ -n "$CONTAINER_ID" ]; then
+		PS1='[\u@box ${CONTAINER_ID} \W]\$ '
+	fi
 
-    # Source global definitions
-    if [ -f /etc/bashrc ]; then
-        # shellcheck disable=SC1091
-        . /etc/bashrc
-    fi
+	# Source global definitions
+	if [ -f /etc/bashrc ]; then
+		# shellcheck disable=SC1091
+		. /etc/bashrc
+	fi
 
-    # User specific aliases and functions
-    if [ -d ~/.bashrc.d ]; then
-        for rc in ~/.bashrc.d/*; do
-            if [ -f "$rc" ]; then
-                # shellcheck disable=SC1090
-                . "$rc"
-            fi
-        done
-    fi
-    unset rc
+	# User specific aliases and functions
+	if [ -d ~/.bashrc.d ]; then
+		for rc in ~/.bashrc.d/*; do
+			if [ -f "$rc" ]; then
+				# shellcheck disable=SC1090
+				. "$rc"
+			fi
+		done
+	fi
+	unset rc
 
-    which zoxide &>/dev/null && {
-        _ZO_DOCTOR=0
-        eval "$(zoxide init --cmd cd bash)"
-    }
+	which zoxide &>/dev/null && {
+		_ZO_DOCTOR=0
+		eval "$(zoxide init --cmd cd bash)"
+	}
 
-    # Linuxbrew
-    if [ -d "/home/linuxbrew/.linuxbrew" ]; then
-        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    fi
+	# Linuxbrew
+	if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+		eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+	fi
 }
 
 _rds_initAlias() {
-    alias ls='ls --color=auto'
-    alias ll='ls -l --color=auto'
-    alias la='ls -la --color=auto'
-    alias l='ls'
-    alias lc='expr $(ls -l | wc -l) - 1'
-    alias lca='expr $(ls -la | wc -l) - 1'
+	alias ls='ls --color=auto'
+	alias ll='ls -l --color=auto'
+	alias la='ls -la --color=auto'
+	alias l='ls'
+	alias lc='expr $(ls -l | wc -l) - 1'
+	alias lca='expr $(ls -la | wc -l) - 1'
 
-    alias grep='grep --color=auto'
+	alias grep='grep --color=auto'
 
-    alias c='clear'
-    alias fh='eval $(history | fzf | sed "s/^[ ]*[0-9]*[ ]*//")'
+	alias c='clear'
+	alias fh='eval $(history | fzf | sed "s/^[ ]*[0-9]*[ ]*//")'
 
-    which bat &>/dev/null && {
-        alias cat='bat'
-    }
+	which bat &>/dev/null && {
+		alias cat='bat'
+	}
 
-    which ani-cli &>/dev/null && {
-        alias anid='ani-cli --vlc --dub'
-    }
+	which ani-cli &>/dev/null && {
+		alias anid='ani-cli --vlc --dub'
+	}
 
-    which ollama &>/dev/null && {
-        ai-l() {
-            if [ -z "$1" ]; then
-                echo "Usage: ai \"Your question here\""
-                return 1
-            fi
-            echo "---"
-            echo "$@" | ollama run deepseek-r1:8b
-        }
+	which ollama &>/dev/null && {
+		ai-l() {
+			if [ -z "$1" ]; then
+				echo "Usage: ai \"Your question here\""
+				return 1
+			fi
+			echo "---"
+			echo "$@" | ollama run deepseek-r1:8b
+		}
 
-        ai() {
-            if [ -z "$1" ]; then
-                echo "Usage: ai-small \"Your question here\""
-                return 1
-            fi
-            echo "---"
-            echo "$@" | ollama run llama3.2:latest
-        }
+		ai() {
+			if [ -z "$1" ]; then
+				echo "Usage: ai-small \"Your question here\""
+				return 1
+			fi
+			echo "---"
+			echo "$@" | ollama run llama3.2:latest
+		}
 
-        if command -v say &>/dev/null; then
-            ai-s() {
-                if [ -z "$1" ]; then
-                    echo "Usage: ais \"Your question here\""
-                    return 1
-                fi
-                local ai_output
-                ai_output=$(ai "$@")
-                echo "$ai_output"
-                say "$ai_output"
-            }
-        fi
-    }
+		if command -v say &>/dev/null; then
+			ai-s() {
+				if [ -z "$1" ]; then
+					echo "Usage: ais \"Your question here\""
+					return 1
+				fi
+				local ai_output
+				ai_output=$(ai "$@")
+				echo "$ai_output"
+				say "$ai_output"
+			}
+		fi
+	}
 }
 
 _rds_printWelcome() {
-    date
-    echo ---------------------
-    echo kernel: "$(uname -r)"
-    echo uptime: "$(uptime -p)"
-    echo shell: "$SHELL"
-    echo ---------------------
+	date
+	echo ---------------------
+	echo kernel: "$(uname -r)"
+	echo uptime: "$(uptime -p)"
+	echo shell: "$SHELL"
+	echo ---------------------
 }
 
 _rds_pathadd "$HOME/.bin"

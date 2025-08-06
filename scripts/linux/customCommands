@@ -8,5 +8,5 @@ mapfile -t commands < <(yj -t <"$toml_file" | jq -r '.commands[]')
 selected_command=$(printf "%s\n" "${commands[@]}" | fzf)
 
 if [[ -n "$selected_command" ]]; then
-  eval "$selected_command"
+	eval "$selected_command"
 fi

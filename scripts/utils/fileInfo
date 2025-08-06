@@ -3,8 +3,8 @@
 file_name=$(find . -type f | fzf --prompt="Select a file: ")
 
 if [ -z "$file_name" ]; then
-    echo "No file selected."
-    exit 1
+	echo "No file selected."
+	exit 1
 fi
 
 mime_type=$(file --mime-type -b "$file_name")
@@ -13,17 +13,17 @@ file_info=$(file "$file_name")
 case "$mime_type" in
 text/plain) ;;
 image/*)
-    exiftool "$file_name"
-    echo "---"
-    ;;
+	exiftool "$file_name"
+	echo "---"
+	;;
 audio/* | video/*)
-    mediainfo "$file_name"
-    echo "---"
-    ;;
+	mediainfo "$file_name"
+	echo "---"
+	;;
 application/pdf)
-    pdfinfo "$file_name"
-    echo "---"
-    ;;
+	pdfinfo "$file_name"
+	echo "---"
+	;;
 *) ;;
 esac
 

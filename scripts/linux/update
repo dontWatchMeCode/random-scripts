@@ -3,109 +3,115 @@
 sudo -v
 
 if [ -d "$HOME/.nvm" ]; then
-    export NVM_DIR="$HOME/.nvm"
+	export NVM_DIR="$HOME/.nvm"
 
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-    (
-        cd "$NVM_DIR"
-        git fetch --tags origin
-        git checkout $(git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1))
-    ) && \. "$NVM_DIR/nvm.sh"
+	(
+		cd "$NVM_DIR"
+		git fetch --tags origin
+		git checkout $(git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1))
+	) && \. "$NVM_DIR/nvm.sh"
 
-    nvm install --lts
-    nvm use --lts
-    nvm alias default node
-    nvm install --reinstall-packages-from=default --latest-npm 'lts/*'
+	nvm install --lts
+	nvm use --lts
+	nvm alias default node
+	nvm install --reinstall-packages-from=default --latest-npm 'lts/*'
 
-    nvm cache clear
+	nvm cache clear
 fi
 
 if which distrobox &>/dev/null; then
-    distrobox upgrade -a
-    sudo -v
+	distrobox upgrade -a
+	sudo -v
 fi
 
 if which npm &>/dev/null; then
-    npm update -g
-    sudo -v
+	npm update -g
+	sudo -v
 fi
 
 if which snap &>/dev/null; then
-    sudo snap refresh
-    sudo -v
+	sudo snap refresh
+	sudo -v
 fi
 
 if which flatpak &>/dev/null; then
-    flatpak update -y
-    sudo -v
+	flatpak update -y
+	sudo -v
 fi
 
 if which apt &>/dev/null; then
-    sudo apt update && sudo apt upgrade -y
-    sudo -v
+	sudo apt update && sudo apt upgrade -y
+	sudo -v
 fi
 
 if which yay &>/dev/null; then
-    yay
-    sudo -v
+	yay
+	sudo -v
 fi
 
 if which deno &>/dev/null; then
-    deno upgrade
-    sudo -v
+	deno upgrade
+	sudo -v
 fi
 
 if which dnf &>/dev/null; then
-    sudo dnf upgrade --refresh -y
-    sudo -v
+	sudo dnf upgrade --refresh -y
+	sudo -v
 fi
 
 if which go &>/dev/null; then
-    go install github.com/showwin/speedtest-go@latest
-    go install github.com/a-h/templ/cmd/templ@latest
-    go install github.com/air-verse/air@latest
-    go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
-    go install github.com/magefile/mage@latest
-    sudo -v
+	go install github.com/showwin/speedtest-go@latest
+	go install github.com/a-h/templ/cmd/templ@latest
+	go install github.com/air-verse/air@latest
+	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+	go install github.com/magefile/mage@latest
+
+	go install mvdan.cc/sh/v3/cmd/shfmt@latest
+	go install github.com/x-motemen/ghq@latest
+
+	sudo -v
 fi
 
 if which brew &>/dev/null; then
-    brew update
-    brew upgrade
-    brew install yj
+	brew update
+	brew upgrade
+	brew install yj
 fi
 
 if which ollama &>/dev/null; then
-    # Get the current installed version of Ollama
-    INSTALLED_VERSION=$(ollama --version | awk '{print $NF}')
+	# Get the current installed version of Ollama
+	INSTALLED_VERSION=$(ollama --version | awk '{print $NF}')
 
-    # Get the latest release version from GitHub API
-    # This requires `jq` to parse JSON. Install it if you don't have it.
-    LATEST_VERSION=$(curl -s https://api.github.com/repos/ollama/ollama/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//')
+	# Get the latest release version from GitHub API
+	# This requires `jq` to parse JSON. Install it if you don't have it.
+	LATEST_VERSION=$(curl -s https://api.github.com/repos/ollama/ollama/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//')
 
-    echo "Installed Ollama Version: $INSTALLED_VERSION"
-    echo "Latest GitHub Version: $LATEST_VERSION"
+	echo "Installed Ollama Version: $INSTALLED_VERSION"
+	echo "Latest GitHub Version: $LATEST_VERSION"
 
-    # Compare the versions
-    if [[ "$(printf '%s\n' "$LATEST_VERSION" "$INSTALLED_VERSION" | sort -V | head -n1)" = "$INSTALLED_VERSION" && "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
-        echo "Your Ollama is outdated. Please update to the latest version."
-    elif [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ]; then
-        echo "Your Ollama is up to date."
-    else
-        echo "Your Ollama version is newer than the latest release on GitHub (possibly a pre-release or local build)."
-        echo "Updating Ollama..."
-        curl -fsSL https://ollama.com/install.sh | sh
-        echo "Restarting Ollama..."
-    fi
+	# Compare the versions
+	if [[ "$(printf '%s\n' "$LATEST_VERSION" "$INSTALLED_VERSION" | sort -V | head -n1)" = "$INSTALLED_VERSION" && "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
+		echo "Your Ollama is outdated. Updating Ollama..."
+		curl -fsSL https://ollama.com/install.sh | sh
+	elif [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ]; then
+		echo "Your Ollama is up to date."
+	else
+		echo "Your Ollama version is newer than the latest release on GitHub (possibly a pre-release or local build)."
+		echo "Updating Ollama..."
+	fi
 
-    ollama pull deepseek-r1:8b
-    ollama pull tinyllama:1.1b
-    ollama pull llama3.2:latest
-    sudo -v
+	echo "Restarting Ollama..."
+	sudo systemctl restart ollama
+
+	ollama pull deepseek-r1:8b
+	ollama pull tinyllama:1.1b
+	ollama pull llama3.2:latest
+	sudo -v
 fi
 
 which ani-cli &>/dev/null && {
-    ani-cli -U
-    sudo -v
+	ani-cli -U
+	sudo -v
 }

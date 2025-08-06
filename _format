@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+find . -type f -name '*' | while IFS= read -r f; do
+	# Read the first line of the file
+	read -r first_line <"$f"
+
+	# Run shfmt only if it starts with the shebang
+	[[ "$first_line" == '#!/usr/bin/env bash' ]] && shfmt -w "$f"
+done
